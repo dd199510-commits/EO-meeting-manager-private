@@ -64,7 +64,7 @@ export function BatchImportModal({ open, meetings, onClose, onConfirm }) {
             rows="10"
             value={rawText}
             onChange={(event) => setRawText(event.target.value)}
-            placeholder={'主题\t开始日期\t开始时间\n【常规会议】CEO Office 周会\t2026/03/12\t09:00:00'}
+            placeholder={'主题\t开始日期\t开始时间\n【常规会议】示例会议\t2026/03/12\t09:00:00'}
           />
         </label>
         {error ? <p className="error-text">{error}</p> : null}

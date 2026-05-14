@@ -47,6 +47,134 @@
   position: relative;
 }
 
+.access-gate {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  color: #111827;
+}
+
+.access-gate-panel {
+  width: min(420px, 100%);
+  display: grid;
+  gap: 18px;
+  padding: 28px;
+  border: 1px solid rgba(148, 163, 184, 0.36);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.14);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+
+.access-gate-mark {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(15, 132, 123, 0.28);
+  border-radius: 14px;
+  background: linear-gradient(180deg, #20a596 0%, #0f847b 100%);
+  box-shadow: 0 14px 28px rgba(15, 132, 123, 0.18);
+}
+
+.access-gate-mark span {
+  width: 18px;
+  height: 14px;
+  border: 2px solid #ffffff;
+  border-radius: 4px;
+  position: relative;
+}
+
+.access-gate-mark span::before {
+  content: '';
+  width: 12px;
+  height: 11px;
+  border: 2px solid #ffffff;
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+  position: absolute;
+  left: 1px;
+  top: -12px;
+}
+
+.access-gate-copy {
+  display: grid;
+  gap: 6px;
+}
+
+.access-gate-copy span {
+  color: #0f847b;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.access-gate-copy h1 {
+  margin: 0;
+  color: #111827;
+  font-size: 28px;
+  line-height: 1.15;
+}
+
+.access-gate-copy p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.access-gate-field {
+  display: grid;
+  gap: 8px;
+}
+
+.access-gate-field span {
+  color: #334155;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.access-gate-field input {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid rgba(100, 116, 139, 0.28);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: #111827;
+  background: rgba(255, 255, 255, 0.9);
+  outline: none;
+}
+
+.access-gate-field input:focus {
+  border-color: rgba(15, 132, 123, 0.58);
+  box-shadow: 0 0 0 3px rgba(15, 132, 123, 0.12);
+}
+
+.access-gate-error {
+  padding: 10px 12px;
+  border: 1px solid rgba(194, 65, 12, 0.18);
+  border-radius: 10px;
+  color: #9a3412;
+  background: rgba(255, 237, 213, 0.8);
+  font-size: 13px;
+}
+
+.access-gate-button {
+  min-height: 46px;
+  border: 1px solid rgba(15, 132, 123, 0.28);
+  border-radius: 10px;
+  color: #ffffff;
+  background: linear-gradient(180deg, #20a596 0%, #0f847b 100%);
+  box-shadow: 0 14px 28px rgba(15, 132, 123, 0.18);
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.access-gate-button:hover {
+  background: linear-gradient(180deg, #1b988b 0%, #0d766f 100%);
+}
+
 .app-shell.app-frame .planner-generation-page {
   display: grid;
   grid-template-columns: minmax(260px, 0.78fr) minmax(420px, 1.42fr) minmax(300px, 0.94fr);

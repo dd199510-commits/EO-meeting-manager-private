@@ -161,7 +161,7 @@ export function ContactsView({ contacts, onSaveContact, onDeleteContact }) {
             <input
               value={formData.name}
               onChange={(event) => updateForm({ name: event.target.value })}
-              placeholder="Robin"
+              placeholder="张三"
             />
           </label>
           <label className="field">
@@ -169,7 +169,7 @@ export function ContactsView({ contacts, onSaveContact, onDeleteContact }) {
             <input
               value={formData.email}
               onChange={(event) => updateForm({ email: event.target.value })}
-              placeholder="robin@example.com"
+              placeholder="name@example.com"
             />
           </label>
           <label className="field">

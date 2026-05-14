@@ -1,11 +1,24 @@
 import { INITIAL_CONTACTS, INITIAL_MEETINGS, INITIAL_SCHEDULED, normalizeMeeting, STORAGE_KEY } from '../data/meetingData'
 import { normalizeContact, resolveAttendeeRefs } from './contacts'
 import { normalizeNoticeTemplates } from '../features/reserveNotice/notificationTemplates'
+import { IS_PUBLIC_EMPTY_BUILD } from './publicBuild'
+
+function createEmptyStorage() {
+  return {
+    meetings: [],
+    scheduled: [],
+    contacts: [],
+    noticeTemplates: [],
+    disabledNoticeTemplateKeys: [],
+  }
+}
 
 export function readStorage() {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY)
     if (!raw) {
+      if (IS_PUBLIC_EMPTY_BUILD) return createEmptyStorage()
+
       const contacts = INITIAL_CONTACTS.map(normalizeContact)
       return {
         meetings: INITIAL_MEETINGS.map((meeting) => ({
@@ -39,6 +52,8 @@ export function readStorage() {
         : [],
     }
   } catch {
+    if (IS_PUBLIC_EMPTY_BUILD) return createEmptyStorage()
+
     const contacts = INITIAL_CONTACTS.map(normalizeContact)
     return {
       meetings: INITIAL_MEETINGS.map((meeting) => ({

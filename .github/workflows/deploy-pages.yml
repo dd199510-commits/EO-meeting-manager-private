@@ -12,6 +12,12 @@ permissions:
   pages: write
   id-token: write
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  VITE_PUBLIC_EMPTY_DATA: 'true'
+  VITE_ENABLE_ACCESS_LOCK: 'true'
+  VITE_ACCESS_PASSWORD: 'ceo2026'
+
 concurrency:
   group: pages
   cancel-in-progress: false
