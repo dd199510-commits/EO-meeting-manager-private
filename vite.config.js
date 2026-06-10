@@ -11,9 +11,7 @@ export default defineConfig({
       '@seedData': fileURLToPath(new URL(
         process.env.VITE_PUBLIC_EMPTY_DATA === 'true'
           ? './src/data/emptySeedData.js'
-          : process.env.VITE_PUBLIC_DEMO_DATA === 'true'
-            ? './src/data/demoSeedData.js'
-            : './src/data/seedData.js',
+          : './src/data/seedData.js',
         import.meta.url,
       )),
     },
