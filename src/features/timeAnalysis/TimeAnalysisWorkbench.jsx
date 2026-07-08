@@ -3660,6 +3660,18 @@ function readStoredTrackedGroups() {
 }
 
 function normalizeTrackedGroup(group) {
+  if (!group || typeof group !== 'object') {
+    return {
+      id: '',
+      label: '',
+      meetingType: '',
+      terms: [],
+      excludeTerms: [],
+      matchMode: 'any',
+      locked: false,
+    }
+  }
+
   return {
     id: group.id || `tracked-${crypto.randomUUID()}`,
     label: String(group.label || '').trim(),
@@ -3708,15 +3720,18 @@ function splitTerms(value) {
 }
 
 function buildTrackedMeetingReports(records, groups) {
+  if (!Array.isArray(groups) || groups.length === 0) return []
+
   const matchedRecordIds = new Set()
-  const reportGroups = groups.filter((group) => group.matchMode !== 'other')
+  const normalizedGroups = groups.map(normalizeTrackedGroup).filter((group) => group.id && group.label)
+  const reportGroups = normalizedGroups.filter((group) => group.matchMode !== 'other')
   const reports = reportGroups.map((group) => {
     const items = records.filter((record) => matchesTrackedGroup(record, group))
     items.forEach((record) => matchedRecordIds.add(record.id))
     return buildTrackedMeetingReport(group, items)
   })
-  const otherGroup = groups.find((group) => group.matchMode === 'other') || DEFAULT_TRACKED_MEETING_GROUPS.at(-1)
-  if (otherGroup.matchMode !== 'other') return reports
+  const otherGroup = normalizedGroups.find((group) => group.matchMode === 'other') || DEFAULT_TRACKED_MEETING_GROUPS.at(-1)
+  if (!otherGroup || otherGroup.matchMode !== 'other') return reports
   const otherItems = records.filter((record) => {
     if (matchedRecordIds.has(record.id)) return false
     return !otherGroup.meetingType || record.meetingType === otherGroup.meetingType
