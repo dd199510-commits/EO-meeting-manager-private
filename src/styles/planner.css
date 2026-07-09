@@ -81,33 +81,58 @@
 
 /* ---- 单行工具栏 ---- */
 .app-shell.app-frame .review-toolbar-slim {
-  display: grid;
+  display: block;
   gap: 0;
+  margin-bottom: 8px;
+  padding: 0 0 8px;
+  overflow-x: auto;
+  overflow-y: visible;
+  scrollbar-width: none;
+}
+
+.app-shell.app-frame .review-toolbar-slim::-webkit-scrollbar {
+  display: none;
 }
 
 .app-shell.app-frame .review-toolbar-slim .review-toolbar-row-top {
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex-direction: row;
+  flex-wrap: nowrap;
   gap: 8px;
+  width: 100%;
+  min-width: max-content;
 }
 
 .app-shell.app-frame .review-toolbar-slim .review-toolbar-main {
   display: flex;
   align-items: center;
+  flex-wrap: nowrap;
   gap: 8px;
-  flex: 0 1 auto;
+  flex: 0 0 auto;
+  width: auto;
+  min-width: max-content;
+}
+
+.app-shell.app-frame .review-toolbar-slim .review-toolbar-nav-slot {
+  flex: 0 0 auto;
+  min-width: auto;
 }
 
 .app-shell.app-frame .review-toolbar-slim .review-toolbar-stats {
   margin-left: auto;
   display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
+  width: auto;
   gap: 6px;
 }
 
 .app-shell.app-frame .review-toolbar-slim .review-toolbar-stat {
   display: inline-flex;
   align-items: baseline;
+  flex: 0 0 auto;
   gap: 5px;
   min-height: 28px;
   padding: 4px 10px;
@@ -129,7 +154,30 @@
 .app-shell.app-frame .review-toolbar-actions {
   display: flex;
   align-items: center;
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
+  width: auto;
   gap: 8px;
+}
+
+.app-shell.app-frame .review-toolbar-actions .primary-button,
+.app-shell.app-frame .review-toolbar-actions .ghost-button {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.app-shell.app-frame .review-toolbar-slim .review-tab-group,
+.app-shell.app-frame .review-toolbar-slim .review-inline-nav,
+.app-shell.app-frame .review-toolbar-slim .month-nav {
+  width: auto;
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
+}
+
+.app-shell.app-frame .review-toolbar-slim .review-tab-group .ghost-button,
+.app-shell.app-frame .review-toolbar-slim .review-tab-group .primary-button {
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 
 .app-shell.app-frame .review-timezone-switcher {
@@ -161,6 +209,7 @@
   min-height: 30px;
   display: inline-flex;
   align-items: center;
+  flex: 0 0 auto;
   padding: 0 10px;
   border: 1px solid rgba(20, 154, 146, 0.22);
   border-radius: var(--nx-r-full);
