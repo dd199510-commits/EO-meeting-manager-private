@@ -9547,6 +9547,8 @@
   border-radius: 12px;
   background: rgba(252, 250, 246, 0.92);
   color: #766f64;
+  position: relative;
+  z-index: 1;
 }
 
 .app-shell.app-frame .review-checklist-search input {
@@ -9570,9 +9572,19 @@
   gap: 6px;
   flex-wrap: wrap;
   min-width: 0;
-  padding-top: 2px;
+  margin-top: 2px;
+  padding: 7px 8px;
+  border: 1px solid rgba(97, 89, 76, 0.06);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.72);
   row-gap: 6px;
   color: #7a7369;
+  position: relative;
+  z-index: 0;
+}
+
+.app-shell.app-frame .review-checklist-filters > svg {
+  flex: 0 0 auto;
 }
 
 .app-shell.app-frame .review-checklist-filter {
@@ -15411,6 +15423,46 @@
   .app-shell.app-frame .planner-step-review .review-calendar {
     width: 100%;
   }
+}
+
+.app-shell.app-frame .planner-step-review .review-layout-integrated.review-layout-collapsed {
+  grid-template-columns: 56px minmax(0, 1fr) !important;
+}
+
+.app-shell.app-frame .planner-step-review .review-checklist-panel.review-checklist-rail {
+  width: 56px;
+  min-width: 56px;
+  max-width: 56px;
+  min-height: min(560px, calc(100vh - 180px));
+  padding: 10px 6px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  justify-items: center;
+  align-items: start;
+  gap: 10px;
+}
+
+.app-shell.app-frame .planner-step-review .review-checklist-rail .icon-button {
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+}
+
+.app-shell.app-frame .planner-step-review .review-checklist-rail-label {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  align-self: center;
+  color: #6c655a;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+}
+
+.app-shell.app-frame .planner-step-review .review-checklist-rail-count {
+  color: #6c655a;
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 @media (min-width: 1600px) {
