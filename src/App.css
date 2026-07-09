@@ -9486,34 +9486,58 @@
 }
 
 .app-shell.app-frame .review-checklist-topbar {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+  gap: 8px;
+  min-width: 0;
 }
 
 .app-shell.app-frame .review-checklist-title {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
   color: #2a241d;
 }
 
 .app-shell.app-frame .review-checklist-title strong {
+  overflow: hidden;
   font-size: 14px;
   font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.app-shell.app-frame .review-checklist-topbar-side {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  min-width: 0;
 }
 
 .app-shell.app-frame .review-checklist-progress {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 26px;
+  padding: 0 8px;
+  border: 1px solid rgba(97, 89, 76, 0.08);
+  border-radius: 999px;
+  background: rgba(247, 243, 236, 0.78);
   color: #6c655a;
   font-size: 12px;
   font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .app-shell.app-frame .review-checklist-search {
   display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
   min-height: 34px;
   padding: 0 10px;
   border: 1px solid rgba(97, 89, 76, 0.08);
@@ -9524,6 +9548,7 @@
 
 .app-shell.app-frame .review-checklist-search input {
   width: 100%;
+  min-width: 0;
   min-height: 34px;
   border: 0;
   background: transparent;
@@ -9539,10 +9564,13 @@
   align-items: center;
   gap: 6px;
   flex-wrap: wrap;
+  min-width: 0;
+  row-gap: 6px;
   color: #7a7369;
 }
 
 .app-shell.app-frame .review-checklist-filter {
+  flex: 0 0 auto;
   min-height: 28px;
   padding: 0 9px;
   border: 1px solid rgba(97, 89, 76, 0.08);
