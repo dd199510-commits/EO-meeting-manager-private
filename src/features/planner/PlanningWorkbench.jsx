@@ -1424,9 +1424,8 @@ export function PlanningWorkbench({
       <div className="planner-task-home">
         <section className="planner-task-home-toolbar">
           <div>
-            <span>排程任务中心</span>
-            <h2>创建、继续或查看历史排程任务</h2>
-            <p className="planner-task-home-hint">每个任务按「准备清单 → 生成方案 → 调整与采用」三步推进，点击任务卡进入对应步骤。</p>
+            <h1>排程任务中心</h1>
+            <span>创建、继续或查看历史排程任务</span>
           </div>
           <button type="button" className="primary-button" onClick={startNewPlanningTask}>
             <Bot size={16} />

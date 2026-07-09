@@ -14728,9 +14728,9 @@
 /* Planner task center: the first screen is a task dashboard, not a step form. */
 .planner-task-home {
   width: min(1180px, 100%);
-  margin: 0 auto;
+  margin: clamp(18px, 3vh, 36px) auto 0;
   display: grid;
-  gap: 14px;
+  gap: 18px;
 }
 
 .planner-task-home-toolbar {
@@ -14738,7 +14738,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 2px 2px 4px;
+  padding: 0 2px 2px;
 }
 
 .planner-task-home-toolbar > div {
@@ -14747,17 +14747,18 @@
   gap: 4px;
 }
 
-.planner-task-home-toolbar span {
-  color: #13766c;
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.planner-task-home-toolbar h2 {
+.planner-task-home-toolbar h1 {
   margin: 0;
   color: #111827;
-  font-size: 22px;
-  line-height: 1.25;
+  font-size: 28px;
+  line-height: 1.12;
+  font-weight: 760;
+}
+
+.planner-task-home-toolbar span {
+  color: #7b8798;
+  font-size: 13px;
+  font-weight: 650;
 }
 
 .planner-task-home-toolbar .primary-button {

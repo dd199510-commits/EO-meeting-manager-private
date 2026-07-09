@@ -577,12 +577,6 @@
   text-overflow: ellipsis;
 }
 
-.app-shell.app-frame .planner-task-home-hint {
-  margin: 4px 0 0;
-  color: var(--nx-muted);
-  font-size: var(--nx-fs-caption);
-}
-
 .app-shell.app-frame .review-nav-today {
   min-height: 28px;
   margin-left: 4px;
