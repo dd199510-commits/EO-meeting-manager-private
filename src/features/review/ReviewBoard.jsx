@@ -1233,32 +1233,34 @@ export function ReviewBoard({
             </button>
           </div>
         </div>
-        <label className="review-checklist-search">
-          <Search size={15} />
-          <input
-            type="text"
-            placeholder="搜索会议、参会人或备注"
-            value={checkSearchText}
-            onChange={(event) => setCheckSearchText(event.target.value)}
-          />
-        </label>
-        <div className="review-checklist-filters">
-          <Filter size={14} />
-          {[
-            ['all', '全部'],
-            ['warning', '待处理'],
-            ['unchecked', '未确认'],
-            ['checked', '已确认'],
-          ].map(([id, label]) => (
-            <button
-              key={id}
-              type="button"
-              className={checkFilterType === id ? 'review-checklist-filter review-checklist-filter-active' : 'review-checklist-filter'}
-              onClick={() => setCheckFilterType(id)}
-            >
-              {label}
-            </button>
-          ))}
+        <div className="review-checklist-controls">
+          <label className="review-checklist-search">
+            <Search size={15} />
+            <input
+              type="text"
+              placeholder="搜索会议、参会人或备注"
+              value={checkSearchText}
+              onChange={(event) => setCheckSearchText(event.target.value)}
+            />
+          </label>
+          <div className="review-checklist-filters">
+            <Filter size={14} />
+            {[
+              ['all', '全部'],
+              ['warning', '待处理'],
+              ['unchecked', '未确认'],
+              ['checked', '已确认'],
+            ].map(([id, label]) => (
+              <button
+                key={id}
+                type="button"
+                className={checkFilterType === id ? 'review-checklist-filter review-checklist-filter-active' : 'review-checklist-filter'}
+                onClick={() => setCheckFilterType(id)}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
         </div>
         <div className="review-checklist-list">
           {filteredChecklistRows.map((row) => {
