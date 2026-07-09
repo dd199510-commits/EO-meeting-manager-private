@@ -57,8 +57,54 @@ function formatParts(parts) {
   }
 }
 
+function getReferenceInstant(referenceDate) {
+  if (referenceDate instanceof Date) return referenceDate
+  if (typeof referenceDate === 'string' && referenceDate) {
+    return new Date(`${referenceDate}T12:00:00Z`)
+  }
+  return new Date()
+}
+
+function getUtcOffsetMinutes(instant, timeZone) {
+  const parts = getZonedParts(instant, timeZone)
+  const zonedAsUtc = Date.UTC(parts.year, parts.month - 1, parts.day, parts.hour, parts.minute)
+  return Math.round((zonedAsUtc - instant.getTime()) / 60000)
+}
+
+function formatDuration(minutes) {
+  const absoluteMinutes = Math.abs(minutes)
+  const hours = Math.floor(absoluteMinutes / 60)
+  const remainingMinutes = absoluteMinutes % 60
+  if (!remainingMinutes) return `${hours} 小时`
+  return `${hours} 小时 ${remainingMinutes} 分钟`
+}
+
+function formatUtcOffset(offsetMinutes) {
+  const sign = offsetMinutes >= 0 ? '+' : '-'
+  const absoluteMinutes = Math.abs(offsetMinutes)
+  const hours = Math.floor(absoluteMinutes / 60)
+  const minutes = absoluteMinutes % 60
+  return `UTC${sign}${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`
+}
+
 export function formatInstantInTimeZone(instant, timeZone) {
   return formatParts(getZonedParts(instant, timeZone))
+}
+
+export function getTimeZoneDifferenceInfo(timeZone, referenceDate) {
+  if (timeZone === SOURCE_REVIEW_TIME_ZONE) return null
+
+  const referenceInstant = getReferenceInstant(referenceDate)
+  const selectedOffset = getUtcOffsetMinutes(referenceInstant, timeZone)
+  const sourceOffset = getUtcOffsetMinutes(referenceInstant, SOURCE_REVIEW_TIME_ZONE)
+  const diffMinutes = selectedOffset - sourceOffset
+  const relation = diffMinutes >= 0 ? '快' : '慢'
+  const utcOffset = formatUtcOffset(selectedOffset)
+
+  return {
+    text: `比北京${relation} ${formatDuration(diffMinutes)} · ${utcOffset}`,
+    title: `按 ${formatInstantInTimeZone(referenceInstant, SOURCE_REVIEW_TIME_ZONE).date} 计算，已考虑冬夏令时`,
+  }
 }
 
 export function zonedDateTimeToInstant(date, time, timeZone) {

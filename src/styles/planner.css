@@ -157,6 +157,21 @@
   outline: none;
 }
 
+.app-shell.app-frame .review-timezone-offset {
+  min-height: 30px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 10px;
+  border: 1px solid rgba(20, 154, 146, 0.22);
+  border-radius: var(--nx-r-full);
+  background: rgba(20, 154, 146, 0.08);
+  color: var(--nx-teal-dark);
+  font-size: var(--nx-fs-caption);
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
 .app-shell.app-frame .review-more-popover {
   min-width: 176px;
 }

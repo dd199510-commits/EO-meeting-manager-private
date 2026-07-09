@@ -35,6 +35,7 @@ import {
   REVIEW_TIME_ZONE_OPTIONS,
   convertDisplaySlotToSource,
   convertMeetingToTimeZone,
+  getTimeZoneDifferenceInfo,
 } from './reviewTimeZoneUtils'
 import { addDays, addMonths, formatDate } from '../../lib/date'
 import { generateOccurrencesInRange } from '../../lib/meetingFrequency'
@@ -423,6 +424,12 @@ export function ReviewBoard({
   const weekBodyHeight = timeSlots.length * WEEK_BLOCK_HEIGHT
   const monthBodyHeight = timeSlots.length * MONTH_BLOCK_HEIGHT
   const monthView = useMemo(() => getMonthView(monthAnchor), [monthAnchor])
+  const timeZoneInfoReferenceDate =
+    viewType === 'calendar' ? weekAnchor : viewType === 'month' ? monthAnchor : firstDate
+  const displayTimeZoneInfo = useMemo(
+    () => getTimeZoneDifferenceInfo(displayTimeZone, timeZoneInfoReferenceDate),
+    [displayTimeZone, timeZoneInfoReferenceDate],
+  )
   const monthWeeks = useMemo(() => {
     const weeks = []
     for (let index = 0; index < monthView.days.length; index += 7) {
@@ -790,6 +797,11 @@ export function ReviewBoard({
                 ))}
               </select>
             </label>
+            {displayTimeZoneInfo ? (
+              <span className="review-timezone-offset" title={displayTimeZoneInfo.title}>
+                {displayTimeZoneInfo.text}
+              </span>
+            ) : null}
           </div>
           <div className="review-toolbar-stats" aria-label="排程统计">
             {statItems.map((item) => (
