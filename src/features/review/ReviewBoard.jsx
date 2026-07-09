@@ -63,6 +63,12 @@ function formatSourceFrequency(sourceFrequency) {
   return '频率：不定期'
 }
 
+function formatCompactDate(dateString) {
+  if (!dateString || typeof dateString !== 'string') return ''
+  const [, month, day] = dateString.split('-')
+  return month && day ? `${month}/${day}` : dateString
+}
+
 function getDefaultManualMeeting() {
   const today = formatDate(new Date())
   return {
@@ -353,6 +359,8 @@ export function ReviewBoard({
   const [checkLocateCycleMap, setCheckLocateCycleMap] = useState({})
   const [checkFocus, setCheckFocus] = useState(null)
   const [pendingScrollTarget, setPendingScrollTarget] = useState(null)
+  const [pendingReviewFocusId, setPendingReviewFocusId] = useState('')
+  const [pendingReviewLocateIndex, setPendingReviewLocateIndex] = useState(0)
   const [checklistCollapsed, setChecklistCollapsed] = useState(
     () => typeof window !== 'undefined' && window.localStorage.getItem('meeting-manager:ui:review-checklist-collapsed:v1') === '1',
   )
@@ -473,6 +481,17 @@ export function ReviewBoard({
       conflicts: conflicts.length,
     }
   }, [scheduledMeetings, conflicts.length])
+  const pendingReviewMeetings = useMemo(
+    () => displayScheduledMeetings
+      .filter((meeting) => !meeting.locked && !meeting.reserved)
+      .sort((left, right) => left.date.localeCompare(right.date) || left.startTime.localeCompare(right.startTime)),
+    [displayScheduledMeetings],
+  )
+  const pendingReviewIdSet = useMemo(
+    () => new Set(pendingReviewMeetings.map((meeting) => meeting.id)),
+    [pendingReviewMeetings],
+  )
+  const pendingReviewCount = pendingReviewMeetings.length
 
   const sourceRange = reviewState?.sourceInputMeetings?.timeRange ?? null
   const getReadableAiReason = useCallback(
@@ -649,12 +668,7 @@ export function ReviewBoard({
   }, [viewType, weekAnchor, monthAnchor, earliestMeetingStart, startHour, WEEK_BLOCK_HEIGHT, MONTH_BLOCK_HEIGHT])
 
   const weekRangeLabel = `${weekDays[0]?.date ?? ''} 至 ${weekDays[weekDays.length - 1]?.date ?? ''}`
-  const statItems = [
-    { key: 'total', label: '总数', value: stats.total, tone: 'blue' },
-    { key: 'reserved', label: '已预留', value: stats.reserved, tone: 'amber' },
-    { key: 'locked', label: '已锁定', value: stats.locked, tone: 'green' },
-    { key: 'conflicts', label: '冲突', value: stats.conflicts, tone: 'violet' },
-  ]
+  const weekRangeCompactLabel = `${formatCompactDate(weekDays[0]?.date)} - ${formatCompactDate(weekDays[weekDays.length - 1]?.date)}`
 
   const viewTabs = (
     <div className="review-tab-group">
@@ -761,7 +775,7 @@ export function ReviewBoard({
       <button className="icon-button" onClick={() => setWeekAnchor(shiftDate(weekAnchor, -7))} aria-label="上一周">
         <ChevronLeft size={16} />
       </button>
-      <strong>{weekRangeLabel}</strong>
+      <strong title={weekRangeLabel}>{weekRangeCompactLabel}</strong>
       <button className="icon-button" onClick={() => setWeekAnchor(shiftDate(weekAnchor, 7))} aria-label="下一周">
         <ChevronRight size={16} />
       </button>
@@ -775,6 +789,20 @@ export function ReviewBoard({
       </button>
     </div>
   )
+
+  function locatePendingReviewMeeting() {
+    if (pendingReviewMeetings.length === 0) return
+
+    const target = pendingReviewMeetings[pendingReviewLocateIndex % pendingReviewMeetings.length]
+    setPendingReviewLocateIndex((current) => (current + 1) % pendingReviewMeetings.length)
+    setPendingReviewFocusId(target.id)
+    setWeekAnchor(target.date)
+    setMonthAnchor(target.date)
+    if (viewType !== 'calendar') {
+      setViewType('calendar')
+    }
+    setPendingScrollTarget({ kind: 'card', meetingId: target.id })
+  }
 
   function renderReviewToolbar(navigation = null) {
     return (
@@ -803,13 +831,29 @@ export function ReviewBoard({
               </span>
             ) : null}
           </div>
-          <div className="review-toolbar-stats" aria-label="排程统计">
-            {statItems.map((item) => (
-              <div key={item.key} className={`review-toolbar-stat review-toolbar-stat-${item.tone}`}>
-                <span>{item.label}</span>
-                <strong>{item.value}</strong>
-              </div>
-            ))}
+          <div className="review-toolbar-stats" aria-label="排程状态">
+            <button
+              type="button"
+              className={pendingReviewCount > 0 ? 'review-toolbar-attention' : 'review-toolbar-attention review-toolbar-attention-done'}
+              onClick={locatePendingReviewMeeting}
+              disabled={pendingReviewCount === 0}
+              title={pendingReviewCount > 0 ? '定位未锁定且未预留的会议' : '全部会议已锁定或已预留'}
+            >
+              <AlertTriangle size={13} />
+              <span>待确认</span>
+              <strong>{pendingReviewCount}</strong>
+            </button>
+            <div
+              className="review-toolbar-summary"
+              title={`总数 ${stats.total}，已预留 ${stats.reserved}，已锁定 ${stats.locked}，冲突 ${stats.conflicts}`}
+            >
+              <strong>{stats.total}</strong>
+              <span>个</span>
+              <i aria-hidden="true" />
+              <span>预留 {stats.reserved}</span>
+              <span>锁定 {stats.locked}</span>
+              <span>冲突 {stats.conflicts}</span>
+            </div>
           </div>
           <div className="review-toolbar-actions">
             {toolbarMoreMenu}
@@ -992,6 +1036,8 @@ export function ReviewBoard({
       activeChecklistPrimaryMeetingId === item.id ? 'review-card-related-primary' : '',
       focusedChecklistActualId === item.id ? 'review-card-related-targeted' : '',
       conflictIdSet.has(item.id) ? 'review-card-conflict' : '',
+      pendingReviewIdSet.has(item.id) ? 'review-card-needs-action' : '',
+      pendingReviewIdSet.has(item.id) && pendingReviewFocusId === item.id ? 'review-card-needs-action-focus' : '',
       draggingMeeting?.id === item.id ? 'review-card-dragging' : '',
       item.locked ? 'review-card-locked' : '',
       item.reserved ? 'review-card-reserved' : '',
@@ -1680,7 +1726,17 @@ export function ReviewBoard({
               </div>
               <div className="schedule-list">
                 {items.map((item) => (
-                  <div key={item.id} className={conflictIdSet.has(item.id) ? 'schedule-item conflict' : 'schedule-item'}>
+                  <div
+                    key={item.id}
+                    className={[
+                      'schedule-item',
+                      conflictIdSet.has(item.id) ? 'conflict' : '',
+                      pendingReviewIdSet.has(item.id) ? 'schedule-item-needs-action' : '',
+                      pendingReviewIdSet.has(item.id) && pendingReviewFocusId === item.id ? 'schedule-item-needs-action-focus' : '',
+                    ]
+                      .filter(Boolean)
+                      .join(' ')}
+                  >
                     <div>
                       <strong>{item.name}</strong>
                       <p>{formatMeetingTimeRange(item)}</p>

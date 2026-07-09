@@ -151,6 +151,54 @@
   font-variant-numeric: tabular-nums;
 }
 
+.app-shell.app-frame .review-toolbar-summary,
+.app-shell.app-frame .review-toolbar-attention {
+  min-height: 30px;
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 6px;
+  padding: 0 10px;
+  border: 1px solid var(--nx-line);
+  border-radius: var(--nx-r-full);
+  background: var(--nx-panel);
+  color: var(--nx-muted);
+  font-size: var(--nx-fs-caption);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.app-shell.app-frame .review-toolbar-summary strong,
+.app-shell.app-frame .review-toolbar-attention strong {
+  color: var(--nx-ink-1);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+
+.app-shell.app-frame .review-toolbar-summary i {
+  width: 1px;
+  height: 14px;
+  background: var(--nx-line);
+}
+
+.app-shell.app-frame .review-toolbar-attention {
+  border-color: rgba(245, 158, 11, 0.28);
+  background: rgba(255, 249, 237, 0.9);
+  color: #9a5b12;
+  cursor: pointer;
+}
+
+.app-shell.app-frame .review-toolbar-attention:hover:not(:disabled) {
+  border-color: rgba(245, 158, 11, 0.44);
+  background: rgba(255, 244, 220, 0.96);
+}
+
+.app-shell.app-frame .review-toolbar-attention-done {
+  border-color: rgba(20, 154, 146, 0.18);
+  background: rgba(20, 154, 146, 0.07);
+  color: var(--nx-muted);
+}
+
 .app-shell.app-frame .review-toolbar-actions {
   display: flex;
   align-items: center;
@@ -219,6 +267,41 @@
   font-weight: 700;
   line-height: 1;
   white-space: nowrap;
+}
+
+.app-shell.app-frame .review-card-needs-action {
+  box-shadow:
+    inset 0 0 0 1px rgba(245, 158, 11, 0.24),
+    0 8px 18px rgba(45, 35, 20, 0.06);
+}
+
+.app-shell.app-frame .review-card-needs-action::after {
+  content: "";
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.16);
+  pointer-events: none;
+}
+
+.app-shell.app-frame .review-card-needs-action-focus {
+  box-shadow:
+    0 0 0 2px rgba(245, 158, 11, 0.36),
+    0 16px 28px rgba(245, 158, 11, 0.2);
+  z-index: 5;
+}
+
+.app-shell.app-frame .schedule-item-needs-action {
+  border-color: rgba(245, 158, 11, 0.24);
+  background: rgba(255, 249, 237, 0.65);
+}
+
+.app-shell.app-frame .schedule-item-needs-action-focus {
+  box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.22);
 }
 
 .app-shell.app-frame .review-more-popover {
